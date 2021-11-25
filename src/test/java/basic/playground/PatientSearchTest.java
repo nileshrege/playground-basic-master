@@ -22,13 +22,14 @@ public class PatientSearchTest {
 
     @Test
     public void searchInLoop() {
+        Double []d = new Double[3];
         for(int i=0; i<3; i++) {
-            search(i < 2);
+            d[i] = search(i < 2);
         }
-
+        Assert.assertTrue(d[1] < d[0] && d[1] < d[2]);
     }
 
-    private void search(boolean isCacheEnabled){
+    private Double search(boolean isCacheEnabled){
         List<Long> responseTimeList = new ArrayList<>(20);
         try {
             Scanner scanner = new Scanner(file);
@@ -47,8 +48,10 @@ public class PatientSearchTest {
 
             optionalDouble.ifPresent(averageResponseTime -> System.out.println("averageResponseTime "+averageResponseTime));
             scanner.close();
+            return optionalDouble.getAsDouble();
         } catch (FileNotFoundException e) {
             Assert.fail("File not found");
         }
+        return 0.0;
     }
 }
